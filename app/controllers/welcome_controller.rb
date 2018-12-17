@@ -1,3 +1,5 @@
 class WelcomeController < ApplicationController
-  def hello; end
+  def hello
+    @name = params[:name] || "you handsome beast"
+  end
 end
