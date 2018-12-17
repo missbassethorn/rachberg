@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_17_210439) do
+ActiveRecord::Schema.define(version: 2018_12_17_212908) do
 
   create_table "puzzles", force: :cascade do |t|
     t.string "clue"
