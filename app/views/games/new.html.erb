@@ -1,4 +1,4 @@
-<h1 class='title'><%= @user.username %></h1>
+<h1 class='title'><%= "#{@user.username } plays '#{@puzzle.clue}'"%></h1>
 
 <section class="section">
   <%= react_component("Game", @game_props, {camelize_props: true, prerender: false}) %>
@@ -15,4 +15,4 @@
 
 <p></p>
 
-<p><%= link_to 'Finish', finish_game_path(start_time: @start_time, user_id: @user.id) %></p>
+<p><%= link_to 'Finish', finish_game_path(start_time: @start_time, user_id: @user.id, puzzle_id: @puzzle.id) %></p>

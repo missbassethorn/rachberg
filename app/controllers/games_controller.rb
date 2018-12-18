@@ -35,6 +35,7 @@ class GamesController < ApplicationController
 
   def finish
     start_time = Time.parse(params[:start_time])
+    @puzzle = Puzzle.find(params[:puzzle_id])
     @seconds = (Time.now - start_time).to_i
     @user = current_user
     @won = game_won?

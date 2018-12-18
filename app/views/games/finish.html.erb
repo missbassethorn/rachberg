@@ -1,1 +1,5 @@
-<p><%= "#{@user.username} it took you #{@seconds} seconds and you #{@won ? 'won' : 'lost'}" %></p>
+<h1 class='title'><%= "#{@user.username } plays '#{@puzzle.clue}'"%></h1>
+
+<p><%= "It took you #{@seconds} seconds and you #{@won ? 'won' : 'lost'}" %></p>
+
+<p><%= link_to 'Play new game', puzzles_path %></p>
