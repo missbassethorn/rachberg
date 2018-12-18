@@ -1,3 +1,12 @@
 <section class="section">
-  <%= react_component("Game", @game_props, {prerender: true}) %>
+  <%= react_component("Game", @game_props, {camelize_props: true, prerender: false}) %>
 </section>
+
+<%= content_tag :div, nil, id: 'colors', data: { colors: @game_props[:colors] } %>
+
+<script>
+  const colors = JSON.parse(document.getElementById('colors').dataset.colors);
+  Object.keys(colors).forEach(colorNumber => {
+    document.documentElement.style.setProperty(`--color-${colorNumber}`, `${colors[colorNumber]}`);
+  })
+</script>

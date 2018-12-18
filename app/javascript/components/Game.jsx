@@ -1,4 +1,5 @@
-import React from "react"
+import React from "react";
+import NonogramPuzzle from "./NonogramPuzzle";
 
 class Game extends React.Component {
   render() {
@@ -8,6 +9,7 @@ class Game extends React.Component {
         <p className="subtitle">
           Solve this puzzle or I'll <strong>delete your family</strong>
         </p>
+        <NonogramPuzzle {...this.props} />
       </div>
     );
   }
