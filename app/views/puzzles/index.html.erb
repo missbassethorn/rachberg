@@ -13,8 +13,8 @@
       <tr>
         <td><%= puzzle.clue %></td>
         <td><%= puzzle.name %></td>
-        <td><%= link_to "Play", puzzle %></td>
-        <td><%= link_to "Edit", edit_puzzle_path(puzzle) %></td>
+        <td><%= link_to "Play", new_game_path(puzzle_id: puzzle) %></td>
+        <td><%= link_to "Show", puzzle_path(puzzle) %></td>
       </tr>
     <% end %>
   </tbody>
