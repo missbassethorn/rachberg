@@ -6,18 +6,27 @@ class NonogramPuzzle extends React.Component {
     const maxHorizontalClueChunks = Math.max(...this.props.horizontalClues.map(clue => clue.length));
     const maxVerticalClueChunks = Math.max(...this.props.verticalClues.map(clue => clue.length));
 
+    const fillings = [];
+    const debug = this.props.debug.split('')
+    for (var i = 0; i < this.props.height; i++) {
+      const nextSliceIndex= this.props.width * i;
+      fillings.push(debug.slice(nextSliceIndex, nextSliceIndex + this.props.width));
+    }
+
+    console.log(fillings)
+
     const rows = this.props.horizontalClues.map((rowClue, i) => {
+      const filling = fillings[i].map((color, col) => {
+        return <td className={`color-${color}`} key={`filled-cell-row${i}-col${col}`}></td>
+      });
+
       return (
         <tr key={`row-${i}`}>
           <HorizontalClue
             clues={rowClue}
             maxChunks={maxHorizontalClueChunks}
             row={i} />
-          <td>???</td>
-          <td>???</td>
-          <td>???</td>
-          <td>???</td>
-          <td>???</td>
+          {filling}
         </tr>
       );
     });
@@ -39,6 +48,9 @@ class NonogramPuzzle extends React.Component {
 NonogramPuzzle.propTypes = {
   horizontalClues: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)).isRequired,
   verticalClues: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)).isRequired,
+  debug: PropTypes.string,
+  height: PropTypes.number,
+  width: PropTypes.number,
   // width: PropTypes.integer,
   // length: PropTypes.integer
 }
