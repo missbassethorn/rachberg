@@ -2,40 +2,47 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+$clue-background-color: #f8f8f8;
+
 :root {
   --color-0: #ffffff;
   --color-1: #000000;
   --color-2: #ff0000;
   --color-3: #00ff00;
-  --color-4: #0000ff;
+  --color-4: #00005f;
 }
 
 table.nonogram {
   border: black 1px solid;
 
   th {
-    background: grey;
+    background: $clue-background-color;
     border: black 1px solid;
     color: black;
-    padding: 2px;
     width: 30px;
     height: 30px;
+    text-align: center;
 
-    &.color-0 {
-      color: var(--color-0);
+    &.horizontal-clue {
+      border-left: none;
+      border-right: none;
     }
-    &.color-1 {
-      color: var(--color-1);
+
+    &.vertical-clue {
+      border-top: none;
+      border-bottom: none;
     }
-    &.color-2 {
-      color: var(--color-2);
-    }
-    &.color-3 {
-      color: var(--color-3);
-    }
-    &.color-4 {
-      color: var(--color-4);
-    }
+
+    &.color-0 { background-color: var(--color-0); }
+    &.color-1 { background-color: var(--color-1); }
+    &.color-2 { background-color: var(--color-2); }
+    &.color-3 { background-color: var(--color-3); }
+    &.color-4 { background-color: var(--color-4); }
+  
+    div {
+      background-color: $clue-background-color;
+      width: 100%;
+    }  
   }
 
   td {
@@ -59,6 +66,14 @@ table.nonogram {
       background-color: var(--color-4);
     }
   }
+}
 
-  
+table.nonogram.display-only {
+  border: black 2px solid;
+
+  td {
+    border: none;
+    width: 40px;
+    height: 40px;
+  }
 }

@@ -2,6 +2,10 @@
   <%= react_component("Game", @game_props, {camelize_props: true, prerender: false}) %>
 </section>
 
+<section class="section">
+  <%= react_component("GameOver", @game_over_props, {camelize_props: true, prerender: false}) %>
+</section>
+
 <%= content_tag :div, nil, id: 'colors', data: { colors: @game_props[:colors] } %>
 
 <script>

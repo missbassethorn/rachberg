@@ -1,32 +1,24 @@
-import React from "react"
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
+import NonogramRowCells from './NonogramRowCells';
+import * as Helpers from './helpers';
 
 class NonogramPuzzle extends React.Component {
   render() {
     const maxHorizontalClueChunks = Math.max(...this.props.horizontalClues.map(clue => clue.length));
     const maxVerticalClueChunks = Math.max(...this.props.verticalClues.map(clue => clue.length));
 
-    const fillings = [];
-    const debug = this.props.debug.split('')
-    for (var i = 0; i < this.props.height; i++) {
-      const nextSliceIndex= this.props.width * i;
-      fillings.push(debug.slice(nextSliceIndex, nextSliceIndex + this.props.width));
-    }
-
-    console.log(fillings)
+    // TODO: change this to render from user soution instead of debug solution
+    const fillings = Helpers.buildSolutionRows(this.props.debug, this.props.width, this.props.height);
 
     const rows = this.props.horizontalClues.map((rowClue, i) => {
-      const filling = fillings[i].map((color, col) => {
-        return <td className={`color-${color}`} key={`filled-cell-row${i}-col${col}`}></td>
-      });
-
       return (
         <tr key={`row-${i}`}>
           <HorizontalClue
             clues={rowClue}
             maxChunks={maxHorizontalClueChunks}
             row={i} />
-          {filling}
+          <NonogramRowCells cells={fillings[i]} rowNumber={i} />
         </tr>
       );
     });
@@ -37,7 +29,7 @@ class NonogramPuzzle extends React.Component {
           <VerticalClues
             clues={this.props.verticalClues}
             maxVerticalChunks={maxVerticalClueChunks}
-            maxHorizonalChunks={maxHorizontalClueChunks} />
+            leftPadding={maxHorizontalClueChunks} />
           {rows}
         </tbody>
       </table>
@@ -50,9 +42,7 @@ NonogramPuzzle.propTypes = {
   verticalClues: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)).isRequired,
   debug: PropTypes.string,
   height: PropTypes.number,
-  width: PropTypes.number,
-  // width: PropTypes.integer,
-  // length: PropTypes.integer
+  width: PropTypes.number
 }
 
 class HorizontalClue extends React.Component {
@@ -60,13 +50,13 @@ class HorizontalClue extends React.Component {
     const paddingNeeded = this.props.maxChunks - this.props.clues.length;
     let padding = [];
     for (let i = 0; i < paddingNeeded; i++) {
-      padding.push(<th key={`pad-col${i}-row${this.props.row}`}></th>);
+      padding.push(<th key={`pad-col${i}-row${this.props.row}`} className='horizontal-clue'></th>);
     }
 
     const chunks = this.props.clues.map((chunk, i) => {
       return (
-        <th key={`clue-col${i}-row${this.props.row}`}>
-          {chunk.length}
+        <th key={`clue-col${i}-row${this.props.row}`} className={`color-${chunk.color} horizontal-clue`}>
+          <div>{chunk.length}</div>
         </th>
       );
     });
@@ -83,30 +73,30 @@ HorizontalClue.propTypes = {
 
 class VerticalClues extends React.Component {
   render() {
-    const clues = zipArray(this.props.clues);
+    const clues = Helpers.rotateArrayWithLeftPad(this.props.clues);
     const rows = [];
-
+    
     for (let rowIndex = 0; rowIndex < this.props.maxVerticalChunks; rowIndex++) {
-      const padding = [];
-      for (let i = 0; i < this.props.maxHorizonalChunks; i++) {
-        padding.push(<th key={`corner-pad-row${rowIndex}-col${i}`}></th>);
+      const cornerPadding = [];
+      for (let i = 0; i < this.props.leftPadding; i++) {
+        cornerPadding.push(<th key={`corner-pad-row${rowIndex}-col${i}`} className='vertical-clue horizontal-clue'></th>);
       }
-
+      
       const rowClues = clues[rowIndex].map((chunk, i) => {
         if (chunk) {
           return (
-          <th key={`clue-col${i}-row${rowIndex}`}>
-            {chunk.length}
-          </th>
+            <th key={`clue-col${i}-row${rowIndex}`} className={`color-${chunk.color} vertical-clue`}>
+              <div>{chunk.length}</div>
+            </th>
           );
         } else {
-          return <th key={`pad-col${i}-row${rowIndex}`}></th>
+          return <th key={`pad-col${i}-row${rowIndex}`} className='vertical-clue'></th>
         }
       });
-
+      
       rows.push(
         <tr key={`vert-clues-row-${rowIndex}`}>
-          {padding}
+          {cornerPadding}
           {rowClues}
         </tr>
       );
@@ -119,15 +109,7 @@ class VerticalClues extends React.Component {
 VerticalClues.propTypes = {
   clues: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)).isRequired,
   maxVerticalChunks: PropTypes.number.isRequired,
-  maxHorizonalChunks: PropTypes.number.isRequired
-}
-
-function zipArray(array) {
-  return array[0].map((_,c) => {
-    return array.map(row => {
-      return row[c];
-    });
-  });
+  leftPadding: PropTypes.number.isRequired
 }
 
 export default NonogramPuzzle;
